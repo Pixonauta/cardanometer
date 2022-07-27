@@ -27,7 +27,7 @@
                 </a>
             </header>
 
-            <div class=" bg-light rounded-3" style="background: blue; background-size: cover;background-position:center;">
+            <div class=" bg-light rounded-3" style="background: url('assets/img/gitcommandsbg.jpg'); background-size: cover;background-position:center;">
                 <div class="p-5 mb-4" style="background:rgba(0,0,0,0.3); ">
                     <div class="container-fluid py-5">
                         <h1 class="display-5 fw-bold text-white">{{ tittle }}</h1>
@@ -41,13 +41,13 @@
             <div class="row pt-4 pb-4">
                 <div class="col-md-6">
                     <form action="">
-                        <h4 class="alert-heading">Size info</h4>
-                        <p>Write your height in centimeters and your weight in Kilograms to calculate your reduction</p>
+                        <h4 class="alert-heading">Scanner</h4>
+                        <p>Write your wallet address to retrieve info about it</p>
                         <hr>
                         <div class="mb-3 row">
-                            <label for="height" class="col-sm-3 col-form-label">Height (Cm)</label>
+                            <label for="height" class="col-sm-3 col-form-label">Wallet address</label>
                             <div class="col-sm-5">
-                                <input type="number" class="form-control" id="height" v-model="wallet" >
+                                <input type="text" class="form-control" id="wallet" v-model="wallet" >
                             </div>
                         </div>
                         
@@ -114,9 +114,14 @@
                 async searchWallet(e) {
                     e.preventDefault();
                     //console.log("hola");
-                    fetch('http://localhost/pixonauta/cardanometer/api/index.php?wallet=')
-                    .then(response => response.json())
-                    .then(data => console.log(data));
+                    if(this.wallet != ''){
+                        fetch(`http://localhost/pixonauta/cardanometer/api/index.php?wallet=${this.wallet}`)
+                        .then(response => response.json())
+                        .then(data => console.log(data));
+                    }else{
+                        console.log('Type your wallet');
+                    }
+                    
 
 
                     /* axios
