@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="assets/img/isotipo3.jpg">
+    <link rel="icon" type="image/x-icon" href="assets/img/Pixonauta-Logo-fav.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
         <div class="container py-4">
             <header class="pb-3 mb-4 border-bottom">
                 <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                    <img src="assets/img/angelmavare-horizontal.svg" alt="Angel Mavare Logo" style="max-width:200px;">
+                    <img src="assets/img/pixonauta-logo-04.png" alt="Angel Mavare Logo" style="max-width:200px;">
                     
                 </a>
             </header>
@@ -47,21 +47,14 @@
                         <div class="mb-3 row">
                             <label for="height" class="col-sm-3 col-form-label">Height (Cm)</label>
                             <div class="col-sm-5">
-                                <input type="number" class="form-control" id="height" v-model="height"
-                                    v-on:keyup="calculateSize">
+                                <input type="number" class="form-control" id="height" v-model="wallet" >
                             </div>
                         </div>
-                        <div class="mb-3 row">
-                            <label for="weight" class="col-sm-3 col-form-label">Weigth (Kg)</label>
-                            <div class="col-sm-5">
-                                <input type="number" class="form-control" id="weight" v-model="weight"
-                                    v-on:keyup="calculateSize" :disabled="!height">
-                            </div>
-                        </div>
+                        
                         <div class="mb-3 row">
 
                             <div class="col-sm-10">
-                                
+                                <a class="btn btn-primary" href="#" v-on:click="searchWallet" >Search <i class="bi bi-search"></i></a>
                             </div>
                         </div>
                     </form>
@@ -71,10 +64,10 @@
                         <h4  id="results" class="alert-heading pb-3">Results</h4>
                         <hr>
                         <ul class="sizeList">
-                            <li v-if="seenHeight" v-html="heightPrint" id="heightId"></li>
-                            <!-- <strong>Height: </strong> <span id="heightPrint"></span>  -->
-                            <li v-if="seenWeight" v-html="weightPrint" id="weightId" ></li>
-                            <!--  <strong>Weight: </strong> <span id="weightPrint"></span> -->
+                            <li> </li>
+                            
+                            <li></li>
+                            
                         </ul>
                         <p v-html="message"></p>
                     </div>
@@ -113,13 +106,28 @@
             data() {
                 return {
                     message: '',
+                    wallet: '',
                     updateFooter: new Date().getFullYear()
                 }
             },
             methods: {
-                firstMethod() {
-                    
+                async searchWallet(e) {
+                    e.preventDefault();
+                    //console.log("hola");
+                    fetch('http://localhost/pixonauta/cardanometer/api/index.php?wallet=')
+                    .then(response => response.json())
+                    .then(data => console.log(data));
 
+
+                    /* axios
+                    .get("http://localhost/pixonauta/cardanometer/api/index.php?", {
+                        params: {
+                        action: 12345
+                        }
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                    }); */
                 }
             },
             mounted() {
