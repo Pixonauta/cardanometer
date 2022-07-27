@@ -30,6 +30,7 @@
             <div class=" bg-light rounded-3" style="background: url('assets/img/gitcommandsbg.jpg'); background-size: cover;background-position:center;">
                 <div class="p-5 mb-4" style="background:rgba(0,0,0,0.3); ">
                     <div class="container-fluid py-5">
+                        <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" style="max-width:200px;">
                         <h1 class="display-5 fw-bold text-white">{{ tittle }}</h1>
                         <p class="col-md-8 fs-4 text-white"></p>
                         <!-- <button class="btn btn-primary btn-lg" type="button">Example button</button> -->
@@ -37,7 +38,7 @@
                 </div>
                 
             </div>
-
+    <?php echo $dir = dirname(__FILE__); ?>
             <div class="row pt-4 pb-4">
                 <div class="col-md-6">
                     <form action="">
@@ -98,7 +99,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
-
+    <?php $current_url="//".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>
     <script>
         const { createApp } = Vue
 
@@ -107,6 +108,7 @@
                 return {
                     message: '',
                     wallet: '',
+                    url: window.location.href,
                     updateFooter: new Date().getFullYear()
                 }
             },
@@ -115,9 +117,14 @@
                     e.preventDefault();
                     //console.log("hola");
                     if(this.wallet != ''){
-                        fetch(`http://localhost/pixonauta/cardanometer/api/index.php?wallet=${this.wallet}`)
+                        fetch(`${this.url}/api/index.php?wallet=${this.wallet}`)
                         .then(response => response.json())
-                        .then(data => console.log(data));
+                        .then(data => {
+                            console.log(data.controlled_amount)
+                        }
+                            
+                        
+                        );
                     }else{
                         console.log('Type your wallet');
                     }
