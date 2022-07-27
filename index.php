@@ -13,7 +13,7 @@
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="assets/css/styles.css">
-    
+
     <title>Cardanometer</title>
 </head>
 
@@ -22,53 +22,46 @@
         <div class="container py-4">
             <header class="pb-3 mb-4 border-bottom">
                 <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                    <img src="assets/img/pixonauta-logo-04.png" alt="Angel Mavare Logo" style="max-width:200px;">
-                    
+                    <img src="assets/img/pixonauta-logo-04.png" alt="Angel Mavare Logo" style="max-width:150px;">
+
                 </a>
             </header>
 
-            <div class=" bg-light rounded-3" style="background: url('assets/img/gitcommandsbg.jpg'); background-size: cover;background-position:center;">
+            <div class=" bg-light rounded-3 " style="background: url('assets/img/gitcommandsbg.jpg'); background-size: cover;background-position:center;">
                 <div class="p-5 mb-4" style="background:rgba(0,0,0,0.3); ">
                     <div class="container-fluid py-5">
-                        <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" style="max-width:200px;">
-                        <h1 class="display-5 fw-bold text-white">{{ tittle }}</h1>
-                        <p class="col-md-8 fs-4 text-white"></p>
-                        <!-- <button class="btn btn-primary btn-lg" type="button">Example button</button> -->
+                        <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" class="d-block mx-auto" style="max-width:150px;">
+                        <h1 class="display-5  text-white mx-auto text-center mb-4">Cardanometer</h1>
+                        <p class="col-md-12 fs-4 text-white text-center">Write your wallet address to retrieve info about it</p>
+                        <div class="input-group mb-3 col-md-12">
+                            <input type="text" id="wallet" v-model="wallet" class="form-control" placeholder="Type your Cardano wallet address" aria-label="Wallet address" aria-describedby="searchButton">
+                            <a class="btn btn-secondary" type="button" id="searchButton" href="#" v-on:click="searchWallet">Search
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 text-white pt-4" v-html="walletInfo">
+
+
+                        </div>
                     </div>
                 </div>
-                
-            </div>
-    <?php echo $dir = dirname(__FILE__); ?>
-            <div class="row pt-4 pb-4">
-                <div class="col-md-6">
-                    <form action="">
-                        <h4 class="alert-heading">Scanner</h4>
-                        <p>Write your wallet address to retrieve info about it</p>
-                        <hr>
-                        <div class="mb-3 row">
-                            <label for="height" class="col-sm-3 col-form-label">Wallet address</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" id="wallet" v-model="wallet" >
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3 row">
 
-                            <div class="col-sm-10">
-                                <a class="btn btn-primary" href="#" v-on:click="searchWallet" >Search <i class="bi bi-search"></i></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            </div>
+
+            <div class="row pt-4 pb-4">
+
                 <div class="col-md-6">
                     <div v-if="seenResults" class="alert alert-success" role="alert">
-                        <h4  id="results" class="alert-heading pb-3">Results</h4>
+                        <h4 id="results" class="alert-heading pb-3">Results</h4>
                         <hr>
                         <ul class="sizeList">
                             <li> </li>
-                            
+
                             <li></li>
-                            
+
                         </ul>
                         <p v-html="message"></p>
                     </div>
@@ -99,15 +92,18 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 
-    <?php $current_url="//".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>
+    <?php $current_url = "//" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>
     <script>
-        const { createApp } = Vue
+        const {
+            createApp
+        } = Vue
 
         createApp({
             data() {
                 return {
                     message: '',
                     wallet: '',
+                    walletInfo: '',
                     url: window.location.href,
                     updateFooter: new Date().getFullYear()
                 }
@@ -116,19 +112,28 @@
                 async searchWallet(e) {
                     e.preventDefault();
                     //console.log("hola");
-                    if(this.wallet != ''){
-                        fetch(`${this.url}/api/index.php?wallet=${this.wallet}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data.controlled_amount)
-                        }
-                            
+                    if (this.wallet != '') {
+
+                            fetch(`${this.url}/api/index.php?wallet=${this.wallet}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                    let allDataWallet = JSON.stringify(data);
+                                    let controlled_amount = (data.controlled_amount)/1000000;
+                                    let rewards = (data.withdrawable_amount)/1000000;
+                                    let pool_id = data.pool_id;
+
+                                    console.log(data)
+                                    this.walletInfo = `<strong>Total ADA:</strong> ${controlled_amount} ₳<br>
+                                    <strong>Rewards available:</strong> ${rewards} ₳<br>
+                                    <strong>Pool ID:</strong>  ${pool_id} <br>`;
+                                    //this.walletInfo = allDataWallet
+                                }
+                            );
                         
-                        );
-                    }else{
+                    } else {
                         console.log('Type your wallet');
                     }
-                    
+
 
 
                     /* axios
@@ -143,11 +148,11 @@
                 }
             },
             mounted() {
-               
+
             }
         }).mount('#app')
     </script>
-    
+
 </body>
 
 </html>
