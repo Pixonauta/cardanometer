@@ -18,7 +18,7 @@ if(isset($_REQUEST['wallet'])){
         $data = curl_exec($ch); 
         curl_close($ch); 
 
-        echo $data;
+        echo json_encode(['status'=>'success', 'info'=>$data ]);
 
     }else if($addressType == 'addr'){
         //First call to retrieve address info and stake address
@@ -33,23 +33,33 @@ if(isset($_REQUEST['wallet'])){
         $data = curl_exec($ch); 
         curl_close($ch); 
 
-    
-        $stake_address_decode = json_decode($data);
-        $stake_address = $stake_address_decode->stake_address;
         
-        //Second call to retrieve full ada amount from stake address
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://cardano-mainnet.blockfrost.io/api/v0/accounts/'.$stake_address); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-        $headers = array(
-            "project_id: mainnetUTxDXTg2MuJ7x8GKW63roI86vmmGFvDP"
-        );
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
-        $data2 = curl_exec($ch); 
-        curl_close($ch); 
+
+        $stake_address_decode = json_decode($data);
+        if(isset($stake_address_decode->stake_address)){
+            $stake_address = $stake_address_decode->stake_address;
+
+            //Second call to retrieve full ada amount from stake address
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://cardano-mainnet.blockfrost.io/api/v0/accounts/'.$stake_address); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+            $headers = array(
+                "project_id: mainnetUTxDXTg2MuJ7x8GKW63roI86vmmGFvDP"
+            );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+            $data2 = curl_exec($ch); 
+            curl_close($ch); 
 
 
-        echo $data2;
+            //echo $data2;
+            echo json_encode(['status'=>'success', 'info'=>$data2 ]);
+
+        }else if(isset($stake_address_decode->status_code)){
+            echo json_encode(['status'=>'error', 'message'=>$stake_address_decode->message ]);
+        }
+        
+        
+        
         /* foreach($stake_address_obj as $el){
             echo $el;
         } */
