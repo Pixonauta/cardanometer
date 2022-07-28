@@ -19,19 +19,38 @@
 
 <body>
     <div class="main" id="app">
-        <div class="container py-4">
-            <header class="pb-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                    <img src="assets/img/pixonauta-logo-04.png" alt="Angel Mavare Logo" style="max-width:150px;">
 
-                </a>
+
+        <div class="container pt-2">
+            <header class="pb-2 mb-2 border-bottom">
+                <nav class="navbar navbar-expand-lg bg-transparent">
+                    <div class="container-fluid">
+                        <a href="https://pixonauta.com/" class="d-flex align-items-center text-dark text-decoration-none">
+                            <img src="assets/img/pixonauta-logo-04.png" alt="Pixonauta Logo" style="max-width:150px;">
+
+                        </a>
+
+                        <div class=" justify-content-end" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+
+                                <li class="nav-item">
+                                    <button class="nav-link btn btn-outline-secondary link-secondary px-3" aria-current="page" href="#"><strong>ADA Price:</strong> ${{ adaPrice }}</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
             </header>
+        </div>
+
+
+        <div class="container py-4">
 
             <div class="glass-container bg-light rounded-3 " style="background: url('assets/img/bluebg2.jpg'); background-size: cover;background-position:center;">
                 <!-- <div class="overlay"></div> -->
                 <div class=" p-5 mb-4" style="background:rgba(0,0,0,0.0); border-radius:5px">
                     <div class="container-fluid py-5">
-                        <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" class="d-block mx-auto" style="max-width:150px;">
+                        <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" class="d-block mx-auto mb-3" style="max-width:150px;">
                         <h1 class="display-5  text-white mx-auto text-center mb-4">Cardanometer</h1>
                         <p class="col-md-12 fs-4 text-white text-center">Write your wallet address to retrieve info about it</p>
                         <div class="input-group mb-3 col-md-12">
@@ -110,6 +129,7 @@
                     wallet: '',
                     walletInfo: '',
                     walletScore: '',
+                    adaPrice: '',
                     url: window.location.href,
                     updateFooter: new Date().getFullYear()
                 }
@@ -121,113 +141,113 @@
                     if (this.wallet != '') {
 
                         axios
-                        .get(`${this.url}/api/index.php?wallet=${this.wallet}`)
-                        .then(response => {
-                                    if(response.data.status == 'success'){
-                                        let allDataWallet = JSON.parse(response.data.info);
-                                            let controlled_amount = (allDataWallet.controlled_amount)/1000000;
-                                            let rewards = (allDataWallet.withdrawable_amount)/1000000;
-                                            let pool_id = allDataWallet.pool_id;
+                            .get(`${this.url}/api/index.php?wallet=${this.wallet}`)
+                            .then(response => {
+                                if (response.data.status == 'success') {
+                                    let allDataWallet = JSON.parse(response.data.info);
+                                    let controlled_amount = ((allDataWallet.controlled_amount) / 1000000).toFixed(2);
+                                    let rewards = ((allDataWallet.withdrawable_amount) / 1000000).toFixed(2);
+                                    let pool_id = allDataWallet.pool_id;
 
-                                            console.log(allDataWallet)
-                                            this.walletInfo = `<p style="max-width:100%"><span style="font-size:1.5em; color:orange"><strong>Total ADA:</strong> ${controlled_amount} ₳ </span><br>
-                                            <strong>Rewards available:</strong> ${rewards} ₳<br>
-                                            </p>`; 
+                                    let dollar_amount = (controlled_amount * this.adaPrice).toFixed(2);
+                                    let dollar_rewards = (rewards * this.adaPrice).toFixed(2);
+
+                                    console.log(allDataWallet)
+                                    this.walletInfo = `<p style="max-width:100%"><span style="font-size:1.5em; color:orange"><strong>Total ADA:</strong> ${controlled_amount} ₳ ($${dollar_amount})</span><br>
+                                            <strong>Rewards available:</strong> ${rewards} ₳ ($${dollar_rewards})<br>
+                                            </p>`;
 
 
 
 
 
-                                        if(controlled_amount >= 1 && controlled_amount < 10 ){
-                                            this.walletScore = `<p class="score-text">Seahorse</p>`
-                                        }
-                                        if(controlled_amount >= 10 && controlled_amount < 25 ){
-                                            this.walletScore = `<p class="score-text">Pipefish</p>`
-                                        }
-                                        if(controlled_amount >= 25 && controlled_amount < 100 ){
-                                            this.walletScore = `<p class="score-text">Shrimp</p>`
-                                        }
-                                        if(controlled_amount >= 100 && controlled_amount < 500 ){
-                                            this.walletScore = `<p class="score-text">Shell</p>`
-                                        }
-                                        if(controlled_amount >= 500 && controlled_amount < 1000 ){
-                                            this.walletScore = `<p class="score-text">Oyster</p>`
-                                        }
-                                        if(controlled_amount >= 1000 && controlled_amount < 2000 ){
-                                            this.walletScore = `<p class="score-text">Starfish</p>`
-                                        }
-                                        if(controlled_amount >= 2000 && controlled_amount < 5000 ){
-                                            this.walletScore = `<p class="score-text">Crab</p>`
-                                        }
-                                        if(controlled_amount >= 5000 && controlled_amount < 10000 ){
-                                            this.walletScore = `<p class="score-text">Fish</p>`
-                                        }
-                                        if(controlled_amount >= 10000 && controlled_amount < 50000 ){
-                                            this.walletScore = `<p class="score-text">Jellyfish</p>`
-                                        }
-                                        if(controlled_amount >= 50000 && controlled_amount < 100000 ){
-                                            this.walletScore = `<p class="score-text">Piranha</p>`
-                                        }
-                                        if(controlled_amount >= 100000 && controlled_amount < 150000 ){
-                                            this.walletScore = `<p class="score-text">Swordfish</p>`
-                                        }
-                                        if(controlled_amount >= 150000 && controlled_amount < 400000 ){
-                                            this.walletScore = `<p class="score-text">Octopus</p>`
-                                        }
-                                        if(controlled_amount >= 400000 && controlled_amount < 750000 ){
-                                            this.walletScore = `<p class="score-text">Shark</p>`
-                                        }
-                                        if(controlled_amount >= 750000 && controlled_amount < 1000000 ){
-                                            this.walletScore = `<p class="score-text">Tiger Shark</p>`
-                                        }
-                                        if(controlled_amount >= 1000000 && controlled_amount < 5000000 ){
-                                            this.walletScore = `<p class="score-text">Great White Shark</p>`
-                                        }
-                                        if(controlled_amount >= 5000000 && controlled_amount < 10000000 ){
-                                            this.walletScore = `<p class="score-text">Orca</p>`
-                                        }
-                                        if(controlled_amount >= 10000000 && controlled_amount < 50000000 ){
-                                            this.walletScore = `<p class="score-text">Whale</p>`
-                                        }
-                                        if(controlled_amount >= 50000000 && controlled_amount < 100000000 ){
-                                            this.walletScore = `<p class="score-text">Fin Whale</p>`
-                                        }
-                                        if(controlled_amount >= 100000000 && controlled_amount < 250000000 ){
-                                            this.walletScore = `<p class="score-text">Blue Whale</p>`
-                                        }
-                                        // this.walletInfo = allDataWallet
-                                    }else{
-                                        this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">${response.data.message}</p>`;
-                                        this.walletScore = ``;
+                                    if (controlled_amount >= 1 && controlled_amount < 10) {
+                                        this.walletScore = `<p class="score-text">Seahorse</p>`
                                     }
-                            
-                                    
+                                    if (controlled_amount >= 10 && controlled_amount < 25) {
+                                        this.walletScore = `<p class="score-text">Pipefish</p>`
+                                    }
+                                    if (controlled_amount >= 25 && controlled_amount < 100) {
+                                        this.walletScore = `<p class="score-text">Shrimp</p>`
+                                    }
+                                    if (controlled_amount >= 100 && controlled_amount < 500) {
+                                        this.walletScore = `<p class="score-text">Shell</p>`
+                                    }
+                                    if (controlled_amount >= 500 && controlled_amount < 1000) {
+                                        this.walletScore = `<p class="score-text">Oyster</p>`
+                                    }
+                                    if (controlled_amount >= 1000 && controlled_amount < 2000) {
+                                        this.walletScore = `<p class="score-text">Starfish</p>`
+                                    }
+                                    if (controlled_amount >= 2000 && controlled_amount < 5000) {
+                                        this.walletScore = `<p class="score-text">Crab</p>`
+                                    }
+                                    if (controlled_amount >= 5000 && controlled_amount < 10000) {
+                                        this.walletScore = `<p class="score-text">Fish</p>`
+                                    }
+                                    if (controlled_amount >= 10000 && controlled_amount < 50000) {
+                                        this.walletScore = `<p class="score-text">Jellyfish</p>`
+                                    }
+                                    if (controlled_amount >= 50000 && controlled_amount < 100000) {
+                                        this.walletScore = `<p class="score-text">Piranha</p>`
+                                    }
+                                    if (controlled_amount >= 100000 && controlled_amount < 150000) {
+                                        this.walletScore = `<p class="score-text">Swordfish</p>`
+                                    }
+                                    if (controlled_amount >= 150000 && controlled_amount < 400000) {
+                                        this.walletScore = `<p class="score-text">Octopus</p>`
+                                    }
+                                    if (controlled_amount >= 400000 && controlled_amount < 750000) {
+                                        this.walletScore = `<p class="score-text">Shark</p>`
+                                    }
+                                    if (controlled_amount >= 750000 && controlled_amount < 1000000) {
+                                        this.walletScore = `<p class="score-text">Tiger Shark</p>`
+                                    }
+                                    if (controlled_amount >= 1000000 && controlled_amount < 5000000) {
+                                        this.walletScore = `<p class="score-text">Great White Shark</p>`
+                                    }
+                                    if (controlled_amount >= 5000000 && controlled_amount < 10000000) {
+                                        this.walletScore = `<p class="score-text">Orca</p>`
+                                    }
+                                    if (controlled_amount >= 10000000 && controlled_amount < 50000000) {
+                                        this.walletScore = `<p class="score-text">Whale</p>`
+                                    }
+                                    if (controlled_amount >= 50000000 && controlled_amount < 100000000) {
+                                        this.walletScore = `<p class="score-text">Fin Whale</p>`
+                                    }
+                                    if (controlled_amount >= 100000000 && controlled_amount < 250000000) {
+                                        this.walletScore = `<p class="score-text">Blue Whale</p>`
+                                    }
+                                    // this.walletInfo = allDataWallet
+                                } else {
+                                    this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">${response.data.message}</p>`;
+                                    this.walletScore = ``;
                                 }
-                            ).catch(error => console.log(error));
 
 
+                            }).catch(error => console.log(error));
 
 
-                            /* fetch(`${this.url}/api/index.php?wallet=${this.wallet}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                    let allDataWallet = JSON.stringify(data);
-                                    let controlled_amount = (data.controlled_amount)/1000000;
-                                    let rewards = (data.withdrawable_amount)/1000000;
-                                    let pool_id = data.pool_id;
+                        /* fetch(`${this.url}/api/index.php?wallet=${this.wallet}`)
+                        .then(response => response.json())
+                        .then(data => {
+                                let allDataWallet = JSON.stringify(data);
+                                let controlled_amount = (data.controlled_amount)/1000000;
+                                let rewards = (data.withdrawable_amount)/1000000;
+                                let pool_id = data.pool_id;
 
-                                    console.log(data)
-                                    this.walletInfo = `<p><strong>Total ADA:</strong> ${controlled_amount} ₳<br>
-                                    <strong>Rewards available:</strong> ${rewards} ₳<br>
-                                    <strong>Pool ID:</strong>  ${pool_id} <br></p>`;
-                                    //this.walletInfo = allDataWallet
-                                }
-                            ).catch(error => {
-                                console.log('<p class="text-red text-center">We have a problem with your wallet search<p>');
-                                this.walletInfo = `<p class="text-red text-center">We have a problem with your wallet search<p>`;
+                                console.log(data)
+                                this.walletInfo = `<p><strong>Total ADA:</strong> ${controlled_amount} ₳<br>
+                                <strong>Rewards available:</strong> ${rewards} ₳<br>
+                                <strong>Pool ID:</strong>  ${pool_id} <br></p>`;
+                                //this.walletInfo = allDataWallet
+                            }
+                        ).catch(error => {
+                            console.log('<p class="text-red text-center">We have a problem with your wallet search<p>');
+                            this.walletInfo = `<p class="text-red text-center">We have a problem with your wallet search<p>`;
 
-                            }); */
-                        
+                        }); */
+
                     } else {
                         this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">Type your wallet</p>`;
                         this.walletScore = ``;
@@ -248,6 +268,13 @@
             },
             mounted() {
 
+                axios
+                    .get(`https://api.coinbase.com/v2/prices/ada-usd/buy`)
+                    .then(response => {
+                        console.log(response.data.data);
+                        this.adaPrice = response.data.data.amount;
+                        console.log(this.adaPrice);
+                    });
             }
         }).mount('#app')
     </script>
