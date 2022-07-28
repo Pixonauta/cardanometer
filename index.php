@@ -46,13 +46,13 @@
 
         <div class="container py-4">
 
-            <div class="glass-container bg-light rounded-3 " style="background: url('assets/img/bluebg2.jpg'); background-size: cover;background-position:center;">
+            <div class="glass-container bg-light rounded-3 " style="background: url('assets/img/oceanblur7.jpg'); background-size: cover;background-position:center;">
                 <!-- <div class="overlay"></div> -->
-                <div class=" p-5 mb-4" style="background:rgba(0,0,0,0.0); border-radius:5px">
-                    <div class="container-fluid py-5">
+                <div class="p-5 mb-4" style="background:rgba(0,0,0,0.3); border-radius:5px">
+                    <div class="container-fluid py-5 pb-0">
                         <img src="assets/img/cardanologowhite.svg" alt="Cardano logo" class="d-block mx-auto mb-3" style="max-width:150px;">
                         <h1 class="display-5  text-white mx-auto text-center mb-4">Cardanometer</h1>
-                        <p class="col-md-12 fs-4 text-white text-center">Write your wallet address to retrieve info about it</p>
+                        <p class="col-md-12 fs-4 text-white text-center">Do you want to know how big your wallet is?</p>
                         <div class="input-group mb-3 col-md-12">
                             <input type="text" id="wallet" v-model="wallet" class="form-control" placeholder="Type your Cardano wallet address" aria-label="Wallet address" aria-describedby="searchButton">
                             <a class="btn btn-primary" type="button" id="searchButton" href="#" v-on:click="searchWallet">Search
@@ -66,8 +66,12 @@
 
 
                             </div>
-                            <div class="col-md-6 text-white pt-4" style="vertical-align:top;" v-html="walletScore">
+                            <div class="col-md-6 text-white pt-4" style="vertical-align:top;">
+                                <div v-if="score" class="score-decoration">
+                                    <p class="mb-0">Your wallet is a</p>
+                                    <p class="score-text" v-html="walletScore"></p>
 
+                                </div>
 
                             </div>
                         </div>
@@ -112,7 +116,7 @@
                 </div>
             </div>
 
-            <footer class="pt-3 mt-4 text-muted border-top">
+            <footer class="pt-3 mt-4 text-muted border-top text-center">
                 © Copyright {{ updateFooter }}, Pixonauta
             </footer>
         </div>
@@ -133,6 +137,7 @@
                     walletInfo: '',
                     walletScore: '',
                     adaPrice: '',
+                    score: false,
                     decoration: 'score-decoration',
                     url: window.location.href,
                     updateFooter: new Date().getFullYear()
@@ -161,7 +166,7 @@
                                             <strong>Rewards available:</strong> ${rewards} ₳ ($${dollar_rewards})<br>
                                             </p>`;
 
-
+                                    this.score = true;
 
 
 
@@ -226,6 +231,7 @@
                                 } else {
                                     this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">${response.data.message}</p>`;
                                     this.walletScore = ``;
+                                    this.score = false;
                                 }
 
 
@@ -255,6 +261,7 @@
                     } else {
                         this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">Type your wallet</p>`;
                         this.walletScore = ``;
+                        this.score = false;
                     }
 
 
