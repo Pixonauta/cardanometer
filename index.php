@@ -69,7 +69,7 @@
                             <div class="col-md-6 text-white pt-4" style="vertical-align:top;">
                                 <div v-if="score" class="score-decoration">
                                     <p class="mb-0">Your wallet is a</p>
-                                    <p class="score-text" v-html="walletScore"></p>
+                                    <p v-html="walletScore"></p>
 
                                 </div>
 
