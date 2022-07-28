@@ -130,9 +130,9 @@
                                             let pool_id = allDataWallet.pool_id;
 
                                             console.log(allDataWallet)
-                                            this.walletInfo = `<p><span style="font-size:1.5em; color:orange"><strong>Total ADA:</strong> ${controlled_amount} ₳ </span><br>
+                                            this.walletInfo = `<p style="max-width:100%"><span style="font-size:1.5em; color:orange"><strong>Total ADA:</strong> ${controlled_amount} ₳ </span><br>
                                             <strong>Rewards available:</strong> ${rewards} ₳<br>
-                                            <strong>Pool ID:</strong>  ${pool_id} <br></p>`; 
+                                            </p>`; 
 
 
 
@@ -198,6 +198,7 @@
                                         // this.walletInfo = allDataWallet
                                     }else{
                                         this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">${response.data.message}</p>`;
+                                        this.walletScore = ``;
                                     }
                             
                                     
@@ -229,6 +230,7 @@
                         
                     } else {
                         this.walletInfo = `<p class=" text-center" style="color:orange; font-size:1.2em;">Type your wallet</p>`;
+                        this.walletScore = ``;
                     }
 
 
