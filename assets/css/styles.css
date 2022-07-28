@@ -12,5 +12,19 @@
 .score-text{
     color:orange; 
     font-size:3em; 
-    font-weight:700
+    font-weight:700;
+    
+    vertical-align: top;
+    border: 1px solid #ffa000;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+.score-decoration{
+    vertical-align: top;
+    border: 1px solid #ffa000;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
 }

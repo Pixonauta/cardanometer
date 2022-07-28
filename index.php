@@ -34,7 +34,7 @@
                             <ul class="navbar-nav">
 
                                 <li class="nav-item">
-                                    <button class="nav-link btn btn-outline-secondary link-secondary px-3" aria-current="page" href="#"><strong>ADA Price:</strong> ${{ adaPrice }}</button>
+                                    <button disabled class="nav-link btn btn-outline-dark link-secondary px-3" aria-current="page" href="#"><strong>ADA Price:</strong> ${{ adaPrice }}</button>
                                 </li>
                             </ul>
                         </div>
@@ -61,15 +61,18 @@
                                 </svg>
                             </a>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 text-white pt-4" style="vertical-align:top;" v-html="walletInfo">
 
-                        <div class="col-md-6 text-white pt-4 d-inline-block" style="vertical-align:top;" v-html="walletInfo">
+
+                            </div>
+                            <div class="col-md-6 text-white pt-4" style="vertical-align:top;" v-html="walletScore">
 
 
+                            </div>
                         </div>
-                        <div class="col-md-6 text-white pt-4 d-inline-block" style="vertical-align:top;" v-html="walletScore">
 
 
-                        </div>
                     </div>
                 </div>
 
@@ -130,6 +133,7 @@
                     walletInfo: '',
                     walletScore: '',
                     adaPrice: '',
+                    decoration: 'score-decoration',
                     url: window.location.href,
                     updateFooter: new Date().getFullYear()
                 }
